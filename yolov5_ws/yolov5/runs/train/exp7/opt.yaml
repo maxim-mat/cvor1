@@ -1,6 +1,6 @@
 weights: yolov5_ws/yolov5/yolov5s.pt
 cfg: ''
-data: yolov5_ws/yolov5/dataset.yaml
+data: yolov5_ws/yolov5/dataset-balanced.yaml
 hyp:
   lr0: 0.01
   lrf: 0.01
@@ -30,7 +30,7 @@ hyp:
   mosaic: 1.0
   mixup: 0.0
   copy_paste: 0.0
-epochs: 1
+epochs: 1000
 batch_size: 20
 imgsz: 640
 rect: false
