@@ -1,6 +1,0 @@
-tool_usage ={"no tool in hand" : "T0",
- "needle_driver": "T1",
- "forceps": "T2",
- "scissors":"T3"}
-
-
