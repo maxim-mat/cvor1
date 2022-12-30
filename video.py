@@ -15,8 +15,8 @@ def parse_args():
     parser.add_argument("--weights", type=str,
                         default='yolov5_ws/yolov5/runs/train/YOLO5-ORIGINAL-ADAMW/weights/best.pt',
                         help="Weights to use for inference")
-    parser.add_argument("--target", type=str, help="Target video to do inference on")
-    parser.add_argument("--save-txt", action='store_true', help="Set to save results to .txt file")
+    parser.add_argument("--target", type=str, help="Target video to do inference on",
+                        default="data/raw/Videos/P022_balloon1.wmv")
     return parser.parse_args()
 
 
@@ -56,24 +56,6 @@ def createSegments(predictions):
     return segments
 
 
-def convertSegmentsToList(segments):
-    segList = []
-    for segment in segments:
-        for i in range(segment[0],segment[1]+1):
-            segList.append(segment[2])
-    return segList
-
-
-def readSegmentFile(path):
-    with open(path, "r") as f:
-        reader = csv.reader(f, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
-        return reader.readLines()
-
-
-def compareToolUsage(predictions, groundTruth):
-    return
-
-
 def main(args):
 
     model = torch.hub.load('yolov5_ws/yolov5', 'custom', source='local', path=args.weights, force_reload=True)
@@ -95,16 +77,12 @@ def main(args):
         right_k_labels.append(6)
         left_k_labels.append(7)
 
-
-    # Define the codec and create VideoWriter object
     fourcc = cv.VideoWriter_fourcc(*'XVID')
     out = cv.VideoWriter(outName + '.mp4', fourcc, 30.0, (640, 480))
 
-    # Check if camera opened successfully
     if not cap.isOpened():
         print("Error opening video stream or file")
 
-    # Read until video is completed
     i = 0
     while cap.isOpened():
         i += 1
@@ -159,15 +137,6 @@ def main(args):
     with open(left_segments+".txt", "w", newline="") as f:
         writer = csv.writer(f, delimiter=' ', quoting=csv.QUOTE_MINIMAL)
         writer.writerows(createSegments(left_labels))
-
-    predictedSegmentsPath = ""
-    trueSegmentsPath = ""
-
-    predictedSegments = readSegmentFile(predictedSegmentsPath)
-    trueSegments = readSegmentFile(trueSegmentsPath)
-    predictedSegments = convertSegmentsToList(predictedSegments)
-    trueSegments = convertSegmentsToList(trueSegments)
-    compareToolUsage(predictedSegments, trueSegments)
 
 
 if __name__ == "__main__":

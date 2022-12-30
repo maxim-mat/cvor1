@@ -14,8 +14,9 @@ def parse_args():
     parser.add_argument("--weights", type=str,
                         default='yolov5_ws/yolov5/runs/train/YOLO5-ORIGINAL-ADAMW/weights/best.pt',
                         help="Weights to use for inference")
-    parser.add_argument("--target", type=str, help="Target image to do inference on")
-    parser.add_argument("--save-txt", action='store_true', help="Set to save results to .txt file")
+    parser.add_argument("--target", type=str, help="Target image to do inference on",
+                        default="data/raw/images/test/P016_tissue1_144.jpg")
+    parser.add_argument("--save-txt", action='store_true', help="Set to save results to .txt file", default=True)
     return parser.parse_args()
 
 
@@ -27,7 +28,8 @@ def main(args):
         with open("result.txt", "w") as f:
             pred = y.xywhn[0].tolist()
             for p in pred:
-                f.write("".join(p))
+                f.write(" ".join([str(i) for i in p]))
+                f.write("\n")
 
     results_xyxy = y.xyxy[0].tolist()
     labels = []
