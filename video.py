@@ -86,6 +86,8 @@ def main(args):
     i = 0
     while cap.isOpened():
         i += 1
+        right_count = 0
+        left_count = 0
         ret, frame = cap.read()
         if ret:
             frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
@@ -98,14 +100,21 @@ def main(args):
                 labels.append(results.names[int(res[5])])
                 boxes.append([int(a) for a in res[0:4]])
                 classes.append(int(res[-1]))
-                if int(res[5]) % 2 == 0:
+                if int(res[5]) % 2 == 0 and right_count == 0:
                     right_k_labels.append(int(res[5]))
                     del right_k_labels[0]
                     right_labels.append(findMostViews(right_k_labels, list(results.names.keys())))
-                else:
+                    right_count = 1
+                elif left_count == 0:
                     left_k_labels.append(int(res[5]))
                     del left_k_labels[0]
                     left_labels.append(findMostViews(left_k_labels, list(results.names.keys())))
+                    left_count = 1
+
+            if right_count == 0:
+                right_labels.append(findMostViews(right_k_labels, list(results.names.keys())))
+            if left_count == 0:
+                left_labels.append(findMostViews(left_k_labels, list(results.names.keys())))
 
             for box, lbl, cls in zip(boxes, labels, classes):
                 color = CLASS_COLOR[cls]
