@@ -122,6 +122,7 @@ def main(args):
                 frame = bbv.add_multiple_labels(frame, [lbl], [box], text_bg_color=color)
 
             font = cv.FONT_HERSHEY_SIMPLEX
+            frame = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
             cv.putText(frame, results.names[right_labels[-1]] + " " + results.names[left_labels[-1]], (50, 50), font, 1,
                        (0, 255, 255), 2, cv.LINE_4)
 
