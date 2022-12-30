@@ -8,7 +8,7 @@ Contents:
 	data - raw and processed data
 	predict.py - object detection on single image
 	video.py - object detection on video
-	report, report_pdf - notebook and html files for report
+	report, report_pdf, report_summary - notebook and html files for report and a summarized version
 	requirements.txt - required packages to run
 	Segmented_Videos.zip - results of object detection on all videos + videos with detected objects
 	yolov5_ws - workspace for yolo5 implementation we used
